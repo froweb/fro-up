@@ -1,0 +1,14 @@
+{
+  "name": "fro-up",
+  "version": "0.0.1",
+  "description": "Module for working with pop-up banners",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pop-up"
+  ],
+  "author": "Frolov Andrey <frolov@froweb.ru>",
+  "license": "ISC"
+}
