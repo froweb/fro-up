@@ -2,10 +2,18 @@
 module.exports = 
 
 class FroUp {
-  constructor() {
+    /**
+  * Setting basic parameters of the banner.
+  * @param {string} id Identifier of the processed banner.
+  */
+  constructor(id) {
+    this.bannerId = id;
     this.body = document.querySelector('body');
     this.banner = document.querySelector('.fro-up');
   }
+  /**
+  * Toggle display/hide banner on page.
+  */
   switchShow() {
     if (this.banner.classList.contains('visuallyhidden')) {
       this.banner.classList.remove('visuallyhidden');
@@ -14,11 +22,23 @@ class FroUp {
     }
     this.bodyBlocking();
   }
+  /**
+  * Toggle block/unblock skrolling on page.
+  */
   bodyBlocking() {
     if (this.body.getAttribute('overflow') === 'hidden') {
       this.body.removeAttribute('overflow');
     } else {
       this.body.setAttribute('overflow', 'hidden');
+    }
+  }
+  /**
+  * Starting a timer to activate the banner.
+  * @param {number} interval time interval before switching on in seconds.
+  */
+  timerOn(interval) {
+    if (this.banner.classList.contains('visuallyhidden')) {
+      setTimeout(this.switchShow, interval * 1000);
     }
   }
 }
