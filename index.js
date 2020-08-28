@@ -6,10 +6,14 @@ class FroUp {
   * Setting basic parameters of the banner.
   * @param {string} id Identifier of the processed banner.
   */
-  constructor(id) {
-    this.bannerId = id;
+  constructor(id = null) {
+    if (id === null) {
+      this.banner = document.querySelector('.fro-up');
+    } else {
+      this.banner = document.querySelector(`#${id}`);
+    }
     this.body = document.querySelector('body');
-    this.banner = document.querySelector('.fro-up');
+    
   }
   /**
   * Toggle display/hide banner on page.
