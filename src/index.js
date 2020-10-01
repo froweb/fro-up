@@ -1,8 +1,9 @@
 'use strict';
-module.exports = 
-
+/**
+* Main class of banner.
+*/
 class FroUp {
-    /**
+  /**
   * Setting basic parameters of the banner.
   * @param {string} id Identifier of the processed banner.
   */
@@ -13,7 +14,6 @@ class FroUp {
       this.banner = document.querySelector(`#${id}`);
     }
     this.body = document.querySelector('body');
-    
   }
   /**
   * Toggle display/hide banner on page.
@@ -22,7 +22,7 @@ class FroUp {
     if (this.banner.classList.contains('visuallyhidden')) {
       this.banner.classList.remove('visuallyhidden');
     } else {
-      this.banner.classList.add('visuallyhidden')
+      this.banner.classList.add('visuallyhidden');
     }
     this.bodyBlocking();
   }
@@ -47,3 +47,4 @@ class FroUp {
   }
 }
 
+module.exports = FroUp;
