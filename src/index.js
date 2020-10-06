@@ -2,12 +2,12 @@
 /**
 * Main class of banner.
 */
-export default class FroUp {
+class FroUp {
   /**
   * Setting basic parameters of the banner.
   * @param {string} id Identifier of the processed banner.
-  * @param {namber} interval
-  * @param {boolean} block
+  * @param {namber} interval Delay time (in seconds) before the banner is shown
+  * @param {boolean} block Blocking scrolling on the page.
   */
   constructor(id, interval = 0, block = false) {
     this.options = {
@@ -17,7 +17,7 @@ export default class FroUp {
     };
   }
   /**
-  * New.
+  * Getting an object by id.
   */
   get $banner() {
     return document.querySelector(`#${this.options.id}`);
@@ -43,10 +43,7 @@ export default class FroUp {
     if ($body.style.overflow === 'hidden') {
       $body.style.overflow = '';
     } else {
-      // $page.setAttribute('overflow', 'hidden');
       $body.style.overflow = 'hidden';
-      // console.log(overflowValue);
-      // $page.setAttribute('position', 'fixed');
     }
   }
   /**
@@ -59,7 +56,7 @@ export default class FroUp {
     }
   }
   /**
-  * New.
+  * Check pressing button.
   */
   clickCheck() {
     this.$banner.addEventListener('click', (e) => {
@@ -70,7 +67,7 @@ export default class FroUp {
     });
   }
   /**
-  * New.
+  * Module start.
   */
   start() {
     if (this.options.interval > 0) {
@@ -81,4 +78,4 @@ export default class FroUp {
   }
 }
 
-// module.exports = FroUp;
+module.exports = FroUp;
