@@ -6,7 +6,7 @@ class FroUp {
   /**
   * Setting basic parameters of the banner.
   * @param {string} id Identifier of the processed banner.
-  * @param {namber} interval Delay time (in seconds) before the banner is shown
+  * @param {namber} interval Delay time (in seconds) before the banner is shown.
   * @param {boolean} block Blocking scrolling on the page.
   */
   constructor(id, interval = 0, block = false) {
