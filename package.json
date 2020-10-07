@@ -12,6 +12,17 @@
   "keywords": [
     "pop-up"
   ],
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/froweb/fro-up.git"
+  },
+    "bugs": {
+    "url": "https://github.com/froweb/fro-up/issues"
+  },
+  "homepage": "https://github.com/froweb/fro-up#readme",
   "author": "Frolov Andrey <frolov@froweb.ru>",
   "license": "ISC",
   "devDependencies": {
