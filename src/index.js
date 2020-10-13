@@ -26,10 +26,10 @@ class FroUp {
   * Toggle display/hide banner on page.
   */
   switchShow() {
-    if (this.$banner.classList.contains('visuallyhidden')) {
-      this.$banner.classList.remove('visuallyhidden');
+    if (this.$banner.classList.contains('visually-hidden')) {
+      this.$banner.classList.remove('visually-hidden');
     } else {
-      this.$banner.classList.add('visuallyhidden');
+      this.$banner.classList.add('visually-hidden');
     }
     if (this.options.block === true) {
       this.bodyBlocking();
@@ -51,7 +51,7 @@ class FroUp {
   */
   timerOn() {
     if (this.options.interval > 0 &&
-      this.$banner.classList.contains('visuallyhidden')) {
+      this.$banner.classList.contains('visually-hidden')) {
       setTimeout(() => this.switchShow(), this.options.interval * 1000);
     }
   }
@@ -71,7 +71,7 @@ class FroUp {
   */
   start() {
     if (this.options.interval > 0) {
-      this.$banner.classList.add('visuallyhidden');
+      this.$banner.classList.add('visually-hidden');
     }
     this.timerOn();
     this.clickCheck();

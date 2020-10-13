@@ -48,8 +48,8 @@ Add the lines below to your index.js file and the banner will work with default 
 ```js
 const FroUp = require('fro-up');
 ...
-const saleBaner = new FroUp('sale');
-saleBaner.start();
+const saleBanner = new FroUp('sale');
+saleBanner.start();
 ```
 
 The default settings do not suit you? You can customize the slider like this:
@@ -57,8 +57,8 @@ The default settings do not suit you? You can customize the slider like this:
 ```js
 const FroUp = require('fro-up');
 ...
-const saleBaner = new FroUp('sale', 4, true);
-saleBaner.start();
+const saleBanner = new FroUp('sale', 4, true);
+saleBanner.start();
 ```
 
 or
@@ -66,13 +66,13 @@ or
 ```js
 const FroUp = require('fro-up');
 ...
-const saleBaner = new FroUp();
-saleBaner.options = {
+const saleBanner = new FroUp();
+saleBanner.options = {
   id: 'sale',
   interval: 4,
   block: true,
 }
-saleBaner.start();
+saleBanner.start();
 ```
 
 ## Settings
