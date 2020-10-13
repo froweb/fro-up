@@ -14,7 +14,7 @@ Add a custom class to your css file like this:
 
 ```css
 ...
-.visuallyhidden {
+.visually-hidden {
 	border: 0;
 	clip: rect(0 0 0 0);
 	clip-path: inset(50%);
