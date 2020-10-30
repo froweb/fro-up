@@ -2,7 +2,7 @@
 /**
 * Main class of banner.
 */
-class FroUp {
+export default class FroUp {
   /**
   * Setting basic parameters of the banner.
   * @param {string} id Identifier of the processed banner.
@@ -23,10 +23,28 @@ class FroUp {
     return document.querySelector(`#${this.options.id}`);
   }
   /**
+  * Getting an object by id.
+  * @return {boolean}
+  */
+  checkAll() {
+    let checkAllRes = true;
+    const allBanners = document.querySelectorAll('.fro-up');
+    for (const key in allBanners) {
+      if (Object.prototype.hasOwnProperty.call(allBanners, key)) {
+        const isHide = allBanners[key].classList.contains('visually-hidden');
+        if (!isHide) {
+          checkAllRes = false;
+          break;
+        }
+      }
+    }
+    return checkAllRes;
+  }
+  /**
   * Toggle display/hide banner on page.
   */
   switchShow() {
-    if (this.$banner.classList.contains('visually-hidden')) {
+    if (this.$banner.classList.contains('visually-hidden') && this.checkAll()) {
       this.$banner.classList.remove('visually-hidden');
     } else {
       this.$banner.classList.add('visually-hidden');
@@ -48,34 +66,51 @@ class FroUp {
   }
   /**
   * Starting a timer to activate the banner.
+  * @return {string|boolean} Id of the timer or false.
   */
   timerOn() {
-    if (this.options.interval > 0 &&
-      this.$banner.classList.contains('visually-hidden')) {
-      setTimeout(() => this.switchShow(), this.options.interval * 1000);
+    if (this.options.interval > 0) {
+      const timerId = setTimeout(
+          () => this.switchShow(), this.options.interval * 1000
+      );
+      return timerId;
     }
+    return false;
   }
   /**
-  * Check pressing button.
+  * Check pressing close button.
   */
   clickCheck() {
+    let timerId = this.timerOn();
     this.$banner.addEventListener('click', (e) => {
       const target = e.target;
       if (target.classList.contains('fro-up__close')) {
         this.switchShow();
+        if (timerId !== false) {
+          clearInterval(timerId);
+          timerId = '';
+        }
       }
     });
   }
   /**
   * Module start.
+  * @param {string} className Identifier of the processed banner launch button.
   */
-  start() {
-    if (this.options.interval > 0) {
-      this.$banner.classList.add('visually-hidden');
+  start(className) {
+    if (className !== undefined && typeof(className) === 'string') {
+      console.log(`ClassName ${className}`);
+      document.addEventListener('click', (e) => {
+        const target = e.target;
+        if (target && target.classList.contains(`${className}`)) {
+          this.$focusElement = target;
+          console.log(this.$focusElement);
+          this.switchShow();
+        }
+      });
     }
-    this.timerOn();
     this.clickCheck();
   }
 }
 
-module.exports = FroUp;
+// module.exports = FroUp;
