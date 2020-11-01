@@ -2,7 +2,7 @@
 /**
 * Main class of banner.
 */
-export default class FroUp {
+class FroUp {
   /**
   * Setting basic parameters of the banner.
   * @param {string} id Identifier of the processed banner.
@@ -99,12 +99,10 @@ export default class FroUp {
   */
   start(className) {
     if (className !== undefined && typeof(className) === 'string') {
-      console.log(`ClassName ${className}`);
       document.addEventListener('click', (e) => {
         const target = e.target;
         if (target && target.classList.contains(`${className}`)) {
           this.$focusElement = target;
-          console.log(this.$focusElement);
           this.switchShow();
         }
       });
@@ -113,4 +111,4 @@ export default class FroUp {
   }
 }
 
-// module.exports = FroUp;
+module.exports = FroUp;

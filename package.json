@@ -1,6 +1,6 @@
 {
   "name": "fro-up",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Module for show pop-up banners and modal windows",
   "main": "./lib/index.js",
   "scripts": {
