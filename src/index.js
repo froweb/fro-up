@@ -2,7 +2,7 @@
 /**
 * Main class of banner.
 */
-class FroUp {
+export default class FroUp {
   /**
   * Setting basic parameters of the banner.
   * @param {string} id Identifier of the processed banner.
@@ -21,6 +21,22 @@ class FroUp {
   */
   get $banner() {
     return document.querySelector(`#${this.options.id}`);
+  }
+  /**
+  * Setting the focusable object.
+  * @param {object} elem
+  */
+  set $focusElement(elem) {
+    elem.focus();
+    console.log('focus return to\n', elem);
+  }
+  /**
+  * Setting blurred object.
+  * @param {object} elem
+  */
+  set $blurElement(elem) {
+    elem.blur();
+    console.log('focus blur\n', elem);
   }
   /**
   * Getting an object by id.
@@ -46,6 +62,7 @@ class FroUp {
   switchShow() {
     if (this.$banner.classList.contains('visually-hidden') && this.checkAll()) {
       this.$banner.classList.remove('visually-hidden');
+      this.$banner.firstElementChild.focus();
     } else {
       this.$banner.classList.add('visually-hidden');
     }
@@ -79,19 +96,23 @@ class FroUp {
   }
   /**
   * Check pressing close button.
+  * @param {object} element
   */
-  clickCheck() {
+  clickCheck(element) {
     let timerId = this.timerOn();
     this.$banner.addEventListener('click', (e) => {
       const target = e.target;
-      if (target.classList.contains('fro-up__close')) {
+      if (target && target.classList.contains('fro-up__close')) {
+        if (element !== undefined) {
+          this.$focusElement = element;
+        }
         this.switchShow();
         if (timerId !== false) {
           clearInterval(timerId);
           timerId = '';
         }
       }
-    });
+    }, {once: true});
   }
   /**
   * Module start.
@@ -102,13 +123,15 @@ class FroUp {
       document.addEventListener('click', (e) => {
         const target = e.target;
         if (target && target.classList.contains(`${className}`)) {
-          this.$focusElement = target;
           this.switchShow();
+          this.$blurElement = target;
+          this.clickCheck(target);
         }
       });
+    } else {
+      this.clickCheck();
     }
-    this.clickCheck();
   }
 }
 
-module.exports = FroUp;
+// module.exports = FroUp;
