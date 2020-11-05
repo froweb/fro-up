@@ -14,6 +14,7 @@ export default class FroUp {
       id: id,
       interval: interval,
       block: block,
+      escEvent: true, //
     };
   }
   /**
@@ -100,7 +101,13 @@ export default class FroUp {
   */
   clickCheck(element) {
     let timerId = this.timerOn();
-    this.$banner.addEventListener('click', (e) => {
+    const timerRemove = () => {
+      if (timerId !== false) {
+        clearInterval(timerId);
+        timerId = '';
+      }
+    };
+    const closeList = (e) => {
       const target = e.target;
       if (target && target.classList.contains('fro-up__close')) {
         if (element !== undefined) {
@@ -111,8 +118,24 @@ export default class FroUp {
           clearInterval(timerId);
           timerId = '';
         }
+        this.$banner.removeEventListener('click', closeList);
       }
-    }, {once: true});
+    };
+    const escList = (e) => {
+      if (e.code == 'Escape') {
+        if (element !== undefined) {
+          this.$focusElement = element;
+        }
+        this.switchShow();
+        timerRemove();
+        document.removeEventListener('keyup', escList);
+      }
+    };
+    if (this.options.escEvent === true &&
+      this.options.block === true) {
+      document.addEventListener('keyup', escList);
+    }
+    this.$banner.addEventListener('click', closeList);
   }
   /**
   * Module start.
