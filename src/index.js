@@ -14,7 +14,8 @@ export default class FroUp {
       id: id,
       interval: interval,
       block: block,
-      escEvent: true, //
+      escEvent: true,
+      autoFocus: true,
     };
   }
   /**
@@ -22,6 +23,20 @@ export default class FroUp {
   */
   get $banner() {
     return document.querySelector(`#${this.options.id}`);
+  }
+  /**
+  *
+  */
+  get $firstInput() {
+    const inputs = this.$banner.querySelectorAll('input');
+    return inputs[0];
+  }
+  /**
+  *
+  */
+  get $firstArea() {
+    const textAreas = this.$banner.querySelectorAll('textarea');
+    return textAreas[0];
   }
   /**
   * Setting the focusable object.
@@ -60,10 +75,26 @@ export default class FroUp {
   /**
   * Toggle display/hide banner on page.
   */
+  focusOnContent() {
+    if (this.$firstInput !== undefined) {
+      this.$firstInput.focus();
+    } else
+    if (this.$firstArea !== undefined) {
+      this.$firstArea.focus();
+    } else {
+      this.$banner.querySelector('.fro-up__body').focus();
+    }
+  }
+  /**
+  * Toggle display/hide banner on page.
+  */
   switchShow() {
     if (this.$banner.classList.contains('visually-hidden') && this.checkAll()) {
       this.$banner.classList.remove('visually-hidden');
-      this.$banner.firstElementChild.focus();
+      // this.$banner.firstElementChild.focus();
+      if (this.options.autoFocus === true) {
+        this.focusOnContent();
+      }
     } else {
       this.$banner.classList.add('visually-hidden');
     }
