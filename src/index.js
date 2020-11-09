@@ -87,11 +87,12 @@ export default class FroUp {
   }
   /**
   * Toggle display/hide banner on page.
+  * @param {string} timerId Timer ID if it is running.
   */
-  switchShow() {
+  switchShow(timerId) {
     if (this.$banner.classList.contains('visually-hidden') && this.checkAll()) {
       this.$banner.classList.remove('visually-hidden');
-      // this.$banner.firstElementChild.focus();
+      clearInterval(timerId);
       if (this.options.autoFocus === true) {
         this.focusOnContent();
       }
@@ -115,29 +116,24 @@ export default class FroUp {
   }
   /**
   * Starting a timer to activate the banner.
-  * @return {string|boolean} Id of the timer or false.
+  * @return {string} Timer ID if it is running.
   */
   timerOn() {
     if (this.options.interval > 0) {
       const timerId = setTimeout(
-          () => this.switchShow(), this.options.interval * 1000
+          () => {
+            this.switchShow();
+            this.clickCheck();
+          }, this.options.interval * 1000
       );
       return timerId;
     }
-    return false;
   }
   /**
   * Check pressing close button.
   * @param {object} element
   */
   clickCheck(element) {
-    let timerId = this.timerOn();
-    const timerRemove = () => {
-      if (timerId !== false) {
-        clearInterval(timerId);
-        timerId = '';
-      }
-    };
     const closeList = (e) => {
       const target = e.target;
       if (target && target.classList.contains('fro-up__close')) {
@@ -145,10 +141,6 @@ export default class FroUp {
           this.$focusElement = element;
         }
         this.switchShow();
-        if (timerId !== false) {
-          clearInterval(timerId);
-          timerId = '';
-        }
         this.$banner.removeEventListener('click', closeList);
       }
     };
@@ -158,7 +150,6 @@ export default class FroUp {
           this.$focusElement = element;
         }
         this.switchShow();
-        timerRemove();
         document.removeEventListener('keyup', escList);
       }
     };
@@ -173,17 +164,16 @@ export default class FroUp {
   * @param {string} className Identifier of the processed banner launch button.
   */
   start(className) {
+    const timerId = this.timerOn();
     if (className !== undefined && typeof(className) === 'string') {
       document.addEventListener('click', (e) => {
         const target = e.target;
         if (target && target.classList.contains(`${className}`)) {
-          this.switchShow();
+          this.switchShow(timerId);
           this.$blurElement = target;
           this.clickCheck(target);
         }
       });
-    } else {
-      this.clickCheck();
     }
   }
 }
