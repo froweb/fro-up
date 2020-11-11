@@ -2,7 +2,7 @@
 /**
 * Main class of banner.
 */
-export default class FroUp {
+class FroUp {
   /**
   * Setting basic parameters of the banner.
   * @param {string} id Identifier of the processed banner.
@@ -25,18 +25,14 @@ export default class FroUp {
     return document.querySelector(`#${this.options.id}`);
   }
   /**
-  *
+  * Getting an object with banner elements.
   */
-  get $firstInput() {
-    const inputs = this.$banner.querySelectorAll('input');
-    return inputs[0];
-  }
-  /**
-  *
-  */
-  get $firstArea() {
-    const textAreas = this.$banner.querySelectorAll('textarea');
-    return textAreas[0];
+  get $firstElem() {
+    return {
+      'input': this.$banner.querySelector('input'),
+      'textArea': this.$banner.querySelector('textarea'),
+      'body': this.$banner.querySelector('.fro-up__body'),
+    };
   }
   /**
   * Setting the focusable object.
@@ -44,7 +40,6 @@ export default class FroUp {
   */
   set $focusElement(elem) {
     elem.focus();
-    console.log('focus return to\n', elem);
   }
   /**
   * Setting blurred object.
@@ -52,11 +47,10 @@ export default class FroUp {
   */
   set $blurElement(elem) {
     elem.blur();
-    console.log('focus blur\n', elem);
   }
   /**
-  * Getting an object by id.
-  * @return {boolean}
+  * Search for displayed banners on the page.
+  * @return {boolean} search results.
   */
   checkAll() {
     let checkAllRes = true;
@@ -76,13 +70,17 @@ export default class FroUp {
   * Toggle display/hide banner on page.
   */
   focusOnContent() {
-    if (this.$firstInput !== undefined) {
-      this.$firstInput.focus();
-    } else
-    if (this.$firstArea !== undefined) {
-      this.$firstArea.focus();
-    } else {
-      this.$banner.querySelector('.fro-up__body').focus();
+    const bannerElem = this.$firstElem;
+    if (!bannerElem['input'] && !bannerElem['textArea']) {
+      bannerElem['body'].setAttribute('tabindex', '0');
+    }
+    for (const key in bannerElem) {
+      if (Object.prototype.hasOwnProperty.call(bannerElem, key)) {
+        if (bannerElem[key]) {
+          bannerElem[key].focus();
+          break;
+        }
+      }
     }
   }
   /**
@@ -153,11 +151,13 @@ export default class FroUp {
         document.removeEventListener('keyup', escList);
       }
     };
-    if (this.options.escEvent === true &&
+    if (!this.$banner.classList.contains('visually-hidden')) {
+      if (this.options.escEvent === true &&
       this.options.block === true) {
-      document.addEventListener('keyup', escList);
+        document.addEventListener('keyup', escList);
+      }
+      this.$banner.addEventListener('click', closeList);
     }
-    this.$banner.addEventListener('click', closeList);
   }
   /**
   * Module start.
@@ -178,4 +178,4 @@ export default class FroUp {
   }
 }
 
-// module.exports = FroUp;
+module.exports = FroUp;

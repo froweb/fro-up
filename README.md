@@ -84,6 +84,8 @@ saleBanner.start();
 |id|no default|String|ID selector for the banner|
 |interval|0|Number|Delay time (in seconds) before the banner is shown|
 |block|false|Boolean|Blocking scrolling on the page|
+|escEvent|true|Boolean|Closing the banner by pressing the ESC key|
+|autoFocus|true|Boolean|Autofocus on banner elements|
 
 ## Important features
 
@@ -98,6 +100,8 @@ saleBanner.start('email__btn');// if the banner is shown by the button
 const saleBanner = new FroUp('sale', 4, true);
 saleBanner.start();// the timer expires, then the second banner will not be shown
 ```
+
+If autoFocus = true, then the first input element of the active banner gets focus. If there are no input elements, focus will go to the first textarea. if the banner does not contain input or textarea, the focus will go to the element with class="fro-up__body".
 
 ## Demos
 
