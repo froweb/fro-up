@@ -14,6 +14,8 @@ class FroUp {
       id: id,
       interval: interval,
       block: block,
+      escEvent: true,
+      autoFocus: true,
     };
   }
   /**
@@ -23,8 +25,32 @@ class FroUp {
     return document.querySelector(`#${this.options.id}`);
   }
   /**
-  * Getting an object by id.
-  * @return {boolean}
+  * Getting an object with banner elements.
+  */
+  get $firstElem() {
+    return {
+      'input': this.$banner.querySelector('input'),
+      'textArea': this.$banner.querySelector('textarea'),
+      'body': this.$banner.querySelector('.fro-up__body'),
+    };
+  }
+  /**
+  * Setting the focusable object.
+  * @param {object} elem
+  */
+  set $focusElement(elem) {
+    elem.focus();
+  }
+  /**
+  * Setting blurred object.
+  * @param {object} elem
+  */
+  set $blurElement(elem) {
+    elem.blur();
+  }
+  /**
+  * Search for displayed banners on the page.
+  * @return {boolean} search results.
   */
   checkAll() {
     let checkAllRes = true;
@@ -43,9 +69,31 @@ class FroUp {
   /**
   * Toggle display/hide banner on page.
   */
-  switchShow() {
+  focusOnContent() {
+    const bannerElem = this.$firstElem;
+    if (!bannerElem['input'] && !bannerElem['textArea']) {
+      bannerElem['body'].setAttribute('tabindex', '0');
+    }
+    for (const key in bannerElem) {
+      if (Object.prototype.hasOwnProperty.call(bannerElem, key)) {
+        if (bannerElem[key]) {
+          bannerElem[key].focus();
+          break;
+        }
+      }
+    }
+  }
+  /**
+  * Toggle display/hide banner on page.
+  * @param {string} timerId Timer ID if it is running.
+  */
+  switchShow(timerId) {
     if (this.$banner.classList.contains('visually-hidden') && this.checkAll()) {
       this.$banner.classList.remove('visually-hidden');
+      clearInterval(timerId);
+      if (this.options.autoFocus === true) {
+        this.focusOnContent();
+      }
     } else {
       this.$banner.classList.add('visually-hidden');
     }
@@ -66,48 +114,67 @@ class FroUp {
   }
   /**
   * Starting a timer to activate the banner.
-  * @return {string|boolean} Id of the timer or false.
+  * @return {string} Timer ID if it is running.
   */
   timerOn() {
     if (this.options.interval > 0) {
       const timerId = setTimeout(
-          () => this.switchShow(), this.options.interval * 1000
+          () => {
+            this.switchShow();
+            this.clickCheck();
+          }, this.options.interval * 1000
       );
       return timerId;
     }
-    return false;
   }
   /**
   * Check pressing close button.
+  * @param {object} element
   */
-  clickCheck() {
-    let timerId = this.timerOn();
-    this.$banner.addEventListener('click', (e) => {
+  clickCheck(element) {
+    const closeList = (e) => {
       const target = e.target;
-      if (target.classList.contains('fro-up__close')) {
-        this.switchShow();
-        if (timerId !== false) {
-          clearInterval(timerId);
-          timerId = '';
+      if (target && target.classList.contains('fro-up__close')) {
+        if (element !== undefined) {
+          this.$focusElement = element;
         }
+        this.switchShow();
+        this.$banner.removeEventListener('click', closeList);
       }
-    });
+    };
+    const escList = (e) => {
+      if (e.code == 'Escape') {
+        if (element !== undefined) {
+          this.$focusElement = element;
+        }
+        this.switchShow();
+        document.removeEventListener('keyup', escList);
+      }
+    };
+    if (!this.$banner.classList.contains('visually-hidden')) {
+      if (this.options.escEvent === true &&
+      this.options.block === true) {
+        document.addEventListener('keyup', escList);
+      }
+      this.$banner.addEventListener('click', closeList);
+    }
   }
   /**
   * Module start.
   * @param {string} className Identifier of the processed banner launch button.
   */
   start(className) {
+    const timerId = this.timerOn();
     if (className !== undefined && typeof(className) === 'string') {
       document.addEventListener('click', (e) => {
         const target = e.target;
         if (target && target.classList.contains(`${className}`)) {
-          this.$focusElement = target;
-          this.switchShow();
+          this.switchShow(timerId);
+          this.$blurElement = target;
+          this.clickCheck(target);
         }
       });
     }
-    this.clickCheck();
   }
 }
 
